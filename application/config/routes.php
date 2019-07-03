@@ -55,3 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 //Custom Route
 $route['welcome/(abc)+']  = 'welcome/test';
+
+
+$route['item-list'] = 'Item/index';
+$route['item-list/(:any)']['delete'] = "Item/delete/";

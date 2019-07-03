@@ -9,7 +9,6 @@ class Home extends CI_Controller
         $this->load->view('include_bs/nav');
         $this->load->view('main/index');
         $this->load->view('include_bs/bottom_two');
-        
     }
     public function login()
     {
@@ -64,7 +63,6 @@ class Home extends CI_Controller
         $this->load->view('include_bs/nav');
         $this->load->view('main/registration');
         $this->load->view('include_bs/bottom_two');
-        
     }
 
     public function insert()
@@ -92,14 +90,43 @@ class Home extends CI_Controller
             $this->load->model('User_model');
             // $this->User_model->insert($full_name, $username, $password);
             $this->User_model->insert($data);
-            $this->send_mail();
+
+            //email ver
+            $this->load->library('email');
+            $config['protocol']    = 'smtp';
+            $config['smtp_host']    = 'ssl://smtp.gmail.com';
+            $config['smtp_port']    = '465';
+            $config['smtp_timeout'] = '7';
+            $config['smtp_user']    = 'Sample.01123@gmail.com';
+            $config['smtp_pass']    = 'Gmail.01';
+
+            $config['charset']    = 'utf-8';
+            $config['newline']    = "\r\n";
+            $config['mailtype'] = 'html'; // or html
+            $config['validation'] = TRUE; // bool whether to validate email or not      
+
+            $this->email->initialize($config);
+
+            $this->email->from('BRentals@gmail.com', 'myname');
+            $this->email->to('Sample.01123@gmail.com');
+            $this->email->subject('"Account Verification"');
+
+            $user_mail = $this->input->post('email');
+            $ver_code = sha1($this->input->post('email_verification_code_sha1'));
+            $base = base_url();
+            $a = "<a href='$base.home/verify_mail/$ver_code'><h2>CLICK HERE TO VERIFY</h2></a>";
+            $this->email->message($a);
+            $this->email->send();
+
+            echo $this->email->print_debugger();
+            //email ver
             redirect('home/login');
             //}
         }
     }
 
     public function users()
-    {   
+    {
         $data2['header'] = "USER LIST";
         $this->load->model('User_model');
         $accounts = $this->User_model->getAllItems();
@@ -113,7 +140,7 @@ class Home extends CI_Controller
     }
 
     public function dashboard()
-    {   
+    {
         $data2['header'] = "USER LIST";
         $this->load->model('User_model');
         $accounts = $this->User_model->getAllItems();
@@ -126,36 +153,25 @@ class Home extends CI_Controller
         $this->load->view('include_bs/bottom_two');
     }
 
-    public function send_mail()
-    {
-        $this->load->library('email');
-        $config['protocol']    = 'smtp';
-        $config['smtp_host']    = 'ssl://smtp.gmail.com';
-        $config['smtp_port']    = '465';
-        $config['smtp_timeout'] = '7';
-        $config['smtp_user']    = 'Sample.01123@gmail.com';
-        $config['smtp_pass']    = 'Gmail.01';
+    public function verify_mail($data)
+    { 
+        $this->load->model('User_model');
+        $user = $this->User_model->getUser($data);
+        // echo '<pre>';
+        // print_r($user);
+        // echo '</pre>';
+        // echo $user->id.'<br/>'; 
+        if($data == $user->verification_code_sha1)
+        {
+            $this->load->model('User_model');
+            $this->User_model->verifyUser($user->id);
+           $this->verify();
+        }
 
-        $config['charset']    = 'utf-8';
-        $config['newline']    = "\r\n";
-        $config['mailtype'] = 'html'; // or html
-        $config['validation'] = TRUE; // bool whether to validate email or not      
-
-        $this->email->initialize($config);
-
-        $this->email->from('BRentals@gmail.com', 'myname');
-        $this->email->to('Sample.01123@gmail.com');
-        $this->email->subject('"Account Verification"');
-        
-        $ver_code = $this->session->verification_code_sha1;
-        $a = "<a href='localhost/elitedev/home/verify.php?vcode=$ver_code'><h2>CLICK HERE TO VERIFY</h2></a>" ;
-        $this->email->message($a);
-        $this->email->send();
-
-        echo $this->email->print_debugger();
     }
 
-    public function showCalendar(){
+    public function showCalendar()
+    {
 
         $data2['header'] = "USER LIST";
         $this->load->model('User_model');
@@ -166,6 +182,18 @@ class Home extends CI_Controller
         $this->load->view('include_bs/admin_nav');
         $this->load->view('main/calendar', $data2);
         $this->load->view('include_bs/bottom_two');
+    }
+
+    public function verify(){
+       
+        $this->load->model('Item_model');
+        $items = $this->Item_model->getAllItems();
+            $data['items'] = $items;
+        // $this->load->view('include_bs/top_two');
+        // $this->load->view('include_bs/admin_nav');
+        $this->load->view('main/verify', $data);
+        // $this->load->view('include_bs/bottom_two');
 
     }
+
 }

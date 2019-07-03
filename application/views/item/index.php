@@ -5,13 +5,13 @@
       <div class="box box-info">
         <div class="box-header with-border">
           <h3> <span class="fa fa-fw fa-list-alt" aria-hidden="true">
-                    </span>Products</h3>
+            </span>Products</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
             </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-            </button>
+            <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+            </button>-->
           </div>
         </div>
         <div class="box-body">
@@ -24,7 +24,7 @@
               <th>ACTION</th>
             </tr>
             <?php foreach ($items as $item) : ?>
-              <tr>
+              <tr id="<?= $item->id ?>">
                 <td><?= $item->id ?></td>
 
                 <td><img src="<?= base_url() ?>/assets/images/thumb_img/<?= $item->image ?>" width="30px" /></td>
@@ -39,15 +39,15 @@
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true">
                     </span>
                   </a>
-                  <a href="" data-toggle="modal" id="<?= $item->id ?>" data-target="#modal-danger" type="button" class="btn btn-danger btn-md">
+                  <button href="" id="<?= $item->id ?>" type="submit" class="btn btn-danger btn-md remove">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true">
                     </span>
-                  </a>
-<!-- 
-                  <a href="<?= base_url() ?>item/add_to_cart/<?= $item->id ?>" type="button" class="btn btn-danger btn-md">
-                    <span class="fa fa-fw fa-cart-plus" aria-hidden="true">
-                    </span>
-                  </a> -->
+                  </button>
+                  <!-- 
+                    <a href="<?= base_url() ?>item/add_to_cart/<?= $item->id ?>" type="button" class="btn btn-danger btn-md">
+                      <span class="fa fa-fw fa-cart-plus" aria-hidden="true">
+                      </span>
+                    </a> -->
 
 
                 </td>
@@ -133,8 +133,8 @@
     <div class="col-md-8 col-md-offset-2">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3>  <span class="fa fa-fw fa-cart-plus" aria-hidden="true">
-                    </span>ADD</h3>
+          <h3> <span class="fa fa-fw fa-cart-plus" aria-hidden="true">
+            </span>ADD</h3>
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
             </button>
@@ -155,7 +155,7 @@
           <?php echo form_open('item/insert') ?>
           <fieldset>
 
-           <!-- Text input-->
+            <!-- Text input-->
             <div class="form-group">
               <label class="col-md-4 control-label" for="name">Name</label>
               <div class="col-md-8">

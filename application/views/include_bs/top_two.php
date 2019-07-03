@@ -16,10 +16,11 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-      
+    <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css" />
     <link rel="stylesheet" type="text/css" href="<?=base_url()?>/bs/css/navbar.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css" /> -->
   
+    <link rel="stylesheet" href="<?=base_url()?>template/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?=base_url()?>template/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->

@@ -3,13 +3,15 @@
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="<?= base_url() ?>bs/js/bootstrap.min.js"></script>
+<script src="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.js"></script>
+<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script> -->
 
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 
+<script src="<?= base_url() ?>template/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url() ?>template/bower_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= base_url() ?>template/bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -49,9 +51,41 @@
 
 
 <script>
-    $(document).ready(function() {
-        $('#table_id').DataTable();
+    
+    $(".remove").click(function(){
+        var id = $(this).parents("tr").attr("id");
+    
+       swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this item",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel ",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+             url: '/item-list/'+id,
+             type: 'DELETE',
+             error: function() {
+                alert('Something is wrong'+id);
+             },
+             success: function(data) {
+                  $("#"+id).remove();
+                  swal("Deleted!", "Your product has been deleted.", "success");
+             }
+          });
+        } else {
+          swal("Cancelled", "", "error");
+        }
+      });
+     
     });
+
 
     function openNav() {
         document.getElementById("mySidenav").style.width = "250px";

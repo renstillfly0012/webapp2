@@ -28,10 +28,23 @@ class User_model extends CI_Model {
         $query = $this->db->get('tbluser');
         return $query->result();
     }
+    
+    public function getUser($data)
+    {
+        $this->db->where('verification_code_sha1',$data);
+        $q = $this->db->get('tbluser');
+        return $q->row();
+    }
 
     public function countUsers(){
         $query = $this->db->query("SELECT *,count(id) AS num_of_time FROM tbluser");
             // print_r($query->result());
             return $query->result();
-        }
+    }
+
+    public function verifyUser($id){
+        $this->db->set('int_is_verified', 1);
+        $this->db->where('id', $id);
+        $this->db->update('tbluser');
+    }
 }
