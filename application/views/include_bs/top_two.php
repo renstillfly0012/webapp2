@@ -64,7 +64,8 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-  
+
+ 
   </head>
   <body class="hold-transition login-page layout-boxed sidebar-mini wysihtml5-supported sidebar-collapse">
   <div class="sidebar-wrapper" style="overflow: hidden; height: auto; min-height: 100%;">

@@ -108,7 +108,7 @@ class Home extends CI_Controller
             $this->email->initialize($config);
 
             $this->email->from('BRentals@gmail.com', 'myname');
-            $this->email->to('Sample.01123@gmail.com');
+            $this->email->to($this->input->post('email'));
             $this->email->subject('"Account Verification"');
 
             $user_mail = $this->input->post('email');
