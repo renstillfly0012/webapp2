@@ -31,13 +31,19 @@ class Home extends CI_Controller
             $this->load->model('User_model');
             $this->User_model->login($data);
             if ($this->session->login) {
-                if ($this->session->usr_type == 'user') {
-                    redirect('item/index');
-                } else {
-                    redirect('home/dashboard
+                if ($this->session->int_is_verified == 1) {
+                    if ($this->session->usr_type == 'user') {
+                        redirect('item/index');
+                    } else {
+                        redirect('home/dashboard
                     ');
+                    }
+                } else {
+                    session_destroy();
+                    redirect('home/not_verify');
                 }
             } else {
+                echo '123';
                 $this->index();
             }
         }
@@ -46,7 +52,7 @@ class Home extends CI_Controller
     public function logout()
     {
         session_destroy();
-        $this->index();
+        redirect('home/index');
     }
 
     public function dd($data)
@@ -151,49 +157,77 @@ class Home extends CI_Controller
         $this->load->view('include_bs/admin_nav');
         $this->load->view('main/dashboard', $data2);
         $this->load->view('include_bs/bottom_two');
+        
     }
 
     public function verify_mail($data)
-    { 
+    {
         $this->load->model('User_model');
         $user = $this->User_model->getUser($data);
         // echo '<pre>';
         // print_r($user);
         // echo '</pre>';
         // echo $user->id.'<br/>'; 
-        if($data == $user->verification_code_sha1)
-        {
+        if ($data == $user->verification_code_sha1) {
             $this->load->model('User_model');
             $this->User_model->verifyUser($user->id);
-           $this->verify();
+            $this->verify();
         }
-
     }
 
-    public function showCalendar()
+    public function not_verify()
     {
-
-        $data2['header'] = "USER LIST";
-        $this->load->model('User_model');
-        $accounts = $this->User_model->getAllItems();
-        $data2['accounts'] = $accounts;
-
         $this->load->view('include_bs/top_two');
-        $this->load->view('include_bs/admin_nav');
-        $this->load->view('main/calendar', $data2);
+        $this->load->view('main/notverify');
         $this->load->view('include_bs/bottom_two');
     }
 
-    public function verify(){
+
+    public function showCalendar($year = NULL, $month = NULL)
+    {
+        $this->load->model('Cal_model');
+        $data['calendar'] = $this->Cal_model->getcalender($year , $month);
+         $this->load->view('include_bs/top_two');
+        $this->load->view('include_bs/admin_nav');
+        $this->load->view('main/calendar', $data);
+         $this->load->view('include_bs/bottom_two');
        
+
+        // $year = $this->uri->segment(3);
+        // $month = $this->uri->segment(4);
+
+        // #prefs = array(
+        //     'start_day'    => 'saturday',
+        //     'month_type'   => 'long',
+        //     'day_type'     => 'short',
+        //     'show_next_prev'  => TRUE,
+
+        // );
+       
+        // $this->load->library('calendar', $prefs);
+        // $data = array(
+        //     3 => 'asdsa',
+        //     7  => 'http://gmanews.tv',
+        //     13 => 'http://example.com/news/article/2006/06/13/',
+        //     26 => 'http://example.com/news/article/2006/06/26/'
+        // );
+        
+        
+        
+        //  echo $this->calendar->generate($year, $month, $data);
+    
+    }
+
+    public function verify()
+    {
+
         $this->load->model('Item_model');
         $items = $this->Item_model->getAllItems();
-            $data['items'] = $items;
+        $data['items'] = $items;
         // $this->load->view('include_bs/top_two');
         // $this->load->view('include_bs/admin_nav');
         $this->load->view('main/verify', $data);
         // $this->load->view('include_bs/bottom_two');
 
     }
-
 }

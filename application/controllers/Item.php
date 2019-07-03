@@ -31,6 +31,7 @@ class Item extends CI_Controller
     {
         $this->load->library('session');
         if ($this->session->has_userdata('login', true) ) {
+           
             $this->load->library('cart');
             $per_page = 5;
             $end_page = $this->uri->segment(3);
