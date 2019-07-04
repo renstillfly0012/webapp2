@@ -497,6 +497,7 @@ class CI_Calendar {
 			'cal_cell_end_other'		=> '</td>',
 			'cal_row_end'				=> '</tr>',
 			'table_close'				=> '</table>'
+			
 		);
 	}
 
