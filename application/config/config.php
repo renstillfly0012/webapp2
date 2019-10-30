@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'http://itwspec62019.000webhostapp.com/';
-$config['base_url'] = 'http://localhost/elitedev4';
+$config['base_url'] = 'https://junkoin.azurewebsites.net';
 
 /*
 |--------------------------------------------------------------------------
